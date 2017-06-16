@@ -20,7 +20,7 @@ $( document ).ready(function() {
                     if($.inArray( value[sectionLabel]["$t"], Object.keys(namesBySection) ) == -1 )
                     {
                         namesBySection[value[sectionLabel]["$t"]] = []
-                        console.log( value[nameLabel]["$t"], namesBySection );
+                        //console.log( value[nameLabel]["$t"], namesBySection );
                     }
                     namesBySection[value[sectionLabel]["$t"]].push(value[nameLabel]["$t"])
                 });
