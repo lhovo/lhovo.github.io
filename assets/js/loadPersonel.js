@@ -2,29 +2,30 @@ $( document ).ready(function() {
     // console.log( "ready!" );
     var namesBySection = {};
 
-    var sectionLabel = "Section";
-    var nameLabel= "Name";
+    var sectionLabel = "gsx$section";
+    var nameLabel= "gsx$name";
 
     // Download the google csv and create a list of sections with people
     function getCSV() {
         $.ajax({
-            url: "https://docs.google.com/spreadsheets/d/1Yp2GMe4qqFUhmdN3afjZpng2woGEQix8ccXeOcCCt9k/pub?output=csv",
+            url: "https://spreadsheets.google.com/feeds/list/1Yp2GMe4qqFUhmdN3afjZpng2woGEQix8ccXeOcCCt9k/od6/public/values?alt=json-in-script",
             type: 'get',
+            dataType: "jsonp",
             success: function(data) {
-                items = $.csv.toObjects(data);
+                items = data["feed"]["entry"];
                 sectionsList = {};
 
                 $( items ).each(function( index, value ) {
-                  if($.inArray( value[sectionLabel], Object.keys(namesBySection) ) == -1 )
-                  {
-                        namesBySection[value[sectionLabel]] = []
-                        //console.log( value[nameLabel], namesBySection );
-                  }
-                  namesBySection[value[sectionLabel]].push(value[nameLabel])
-                  
+                    //console.log( index, value );
+                    if($.inArray( value[sectionLabel]["$t"], Object.keys(namesBySection) ) == -1 )
+                    {
+                        namesBySection[value[sectionLabel]["$t"]] = []
+                        console.log( value[nameLabel]["$t"], namesBySection );
+                    }
+                    namesBySection[value[sectionLabel]["$t"]].push(value[nameLabel]["$t"])
                 });
 
-                // Call the function to insert the first level buttons in the web browser
+                // // Call the function to insert the first level buttons in the web browser
                 addSections(namesBySection);
             },
             error: function(jqXHR, textStatus, errorThrow){
